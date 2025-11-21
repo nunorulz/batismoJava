@@ -1,6 +1,9 @@
 package dev.projeto.CadastroDeNinjas.Ninjas;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +19,18 @@ public class NinjaController {
     }
 
     @GetMapping("/boasvindas")
+    @Operation(summary = "Mensagem de boas vindas", description = "Essa rota retorna uma mensagem de boas vindas para quem acessa")
     public String boasVindas(){
         return "Essa é a minha primeira mensagem";
     }
 
     //Adicionar Ninja (Create)
     @PostMapping("/criar")
+    @Operation(summary = "Cria um novo ninja", description = "Insere um novo ninja no banco de dados")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Ninja criado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Erro na criação do ninja")
+    })
     public ResponseEntity<String> criarNinja(@RequestBody NinjaDTO ninja){
         NinjaDTO novoNinja = ninjaService.criarNinja(ninja);
         return ResponseEntity.status(HttpStatus.CREATED)
